@@ -1,0 +1,11 @@
+name: Cavitation, no bearing parts
+asset: P-204
+mode: cavitation
+approve: true
+incident: "Flow drop and pressure fluctuation reported on pump P-204."
+expect:
+  handoffs: [telemetry_analyst, maintenance_expert, maintenance_planner]
+  tools: [search_manual]
+  no_tools: [check_spare_parts]
+  report_contains: [cavitation, STR-80]
+  work_order_created: true

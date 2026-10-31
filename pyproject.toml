@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "incident-agents"
+version = "0.1.0"
+description = "Multi-agent incident triage for industrial IoT on Azure AI Foundry: supervisor/specialist agents, tool calling, human approval, OpenTelemetry tracing, scenario evaluation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Eshagh Dehmollaian" }]
+dependencies = [
+  "openai>=1.40",
+  "pyyaml>=6.0",
+  "numpy>=1.24",
+  "opentelemetry-api>=1.25",
+  "opentelemetry-sdk>=1.25",
+]
+
+[project.optional-dependencies]
+azure = ["azure-identity>=1.17", "azure-monitor-opentelemetry>=1.6"]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+incident-agents = "incident_agents.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+incident_agents = ["plant/manual/*.md"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["incident_agents"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

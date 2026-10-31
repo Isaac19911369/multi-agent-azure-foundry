@@ -1,0 +1,11 @@
+name: Bearing wear, approved work order
+asset: P-101
+mode: bearing_wear
+approve: true
+incident: "Anomaly alert from condition monitoring for pump P-101: vibration above alarm limit."
+expect:
+  handoffs: [telemetry_analyst, maintenance_expert, maintenance_planner]
+  tools: [get_anomaly_events, get_sensor_stats, search_manual, check_spare_parts, create_work_order]
+  report_contains: [P-101, bearing, BRG-6310, WO-]
+  priority: P2
+  work_order_created: true

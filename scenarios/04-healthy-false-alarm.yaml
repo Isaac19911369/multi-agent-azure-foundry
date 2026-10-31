@@ -1,0 +1,11 @@
+name: False alarm, stop early
+asset: P-310
+mode: healthy
+approve: true
+incident: "Single vibration spike reported on pump P-310."
+expect:
+  handoffs: [telemetry_analyst]
+  no_handoffs: [maintenance_expert, maintenance_planner]
+  no_tools: [create_work_order]
+  report_contains: [no significant anomaly]
+  work_order_created: false

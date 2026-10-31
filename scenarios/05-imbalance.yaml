@@ -1,0 +1,10 @@
+name: Imbalance without temperature rise
+asset: P-102
+mode: imbalance
+approve: true
+incident: "Vibration alarm on pump P-102."
+expect:
+  handoffs: [telemetry_analyst, maintenance_expert, maintenance_planner]
+  report_contains: [imbalance]
+  no_tools: [check_spare_parts]
+  work_order_created: true

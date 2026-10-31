@@ -1,0 +1,9 @@
+name: Human rejects the work order
+asset: P-101
+mode: bearing_wear
+approve: false
+incident: "Anomaly alert from condition monitoring for pump P-101: vibration above alarm limit."
+expect:
+  handoffs: [telemetry_analyst, maintenance_expert, maintenance_planner]
+  report_contains: [rejected]
+  work_order_created: false

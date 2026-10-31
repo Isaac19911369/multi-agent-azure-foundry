@@ -1,0 +1,25 @@
+invoke_agent supervisor
+  chat demo-policy  [tokens in/out=129/30]
+  invoke_agent telemetry_analyst
+    chat demo-policy  [tokens in/out=90/30]
+    execute_tool get_anomaly_events
+    chat demo-policy  [tokens in/out=121/60]
+    execute_tool get_sensor_stats
+    execute_tool get_sensor_stats
+    chat demo-policy  [tokens in/out=196/69]
+  chat demo-policy  [tokens in/out=199/30]
+  invoke_agent maintenance_expert
+    chat demo-policy  [tokens in/out=179/60]
+    execute_tool search_manual
+    execute_tool get_maintenance_history
+    chat demo-policy  [tokens in/out=542/64]
+  chat demo-policy  [tokens in/out=263/30]
+  invoke_agent maintenance_planner
+    chat demo-policy  [tokens in/out=255/30]
+    execute_tool check_spare_parts
+    chat demo-policy  [tokens in/out=269/30]
+    execute_tool create_work_order  [approval.granted=True]
+    chat demo-policy  [tokens in/out=305/22]
+  chat demo-policy  [tokens in/out=285/30]
+  invoke_agent reporter
+    chat demo-policy  [tokens in/out=250/177]
