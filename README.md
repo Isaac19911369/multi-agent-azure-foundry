@@ -126,6 +126,15 @@ incident-agents --backend azure eval     # the same suite against your Foundry d
 - **Offline `demo` backend:** a deterministic rule-based policy plays each role. It verifies the orchestration, tool contracts, approval flow, limits and tracing in CI without credentials. It says nothing about model quality.
 - **`azure` backend:** the suite becomes a behavioural evaluation of the real model, covering routing decisions, tool selection, early stopping and respect for approvals. Add scenarios as new failure modes appear.
 
+### Real-model evaluation in GitHub Actions
+
+The [`Real-model evaluation`](.github/workflows/real-model-eval.yml) workflow runs the scenario suite against a hosted model with tool calling. It commits the report and one transcript per scenario to [`eval/results/`](eval/results). The transcripts record handoffs, tool calls, approvals, token usage and the final report. Two providers are supported:
+
+- **NVIDIA API catalog:** add an `NVIDIA_API_KEY` secret.
+- **Azure OpenAI / Foundry:** add the `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_API_KEY` secrets.
+
+Then start it from **Actions → Real-model evaluation → Run workflow**.
+
 ## Deploy to Azure
 
 ```bash

@@ -80,8 +80,17 @@ def main(argv: list[str] | None = None) -> None:
         if args.json:
             print(json.dumps(res.to_dict(), indent=2, default=str))
     else:
-        report = run_suite(Path(args.scenarios), lambda: make_model(args.backend))
+        from datetime import date
+
+        model = make_model(args.backend).model
         out = Path(args.out)
+        report = run_suite(
+            Path(args.scenarios), lambda: make_model(args.backend), transcripts=out / "transcripts"
+        )
+        report = (
+            f"# Scenario evaluation: {model}\n\nDate: {date.today().isoformat()} · "
+            f"backend: `{args.backend}`\n\n" + report
+        )
         out.mkdir(parents=True, exist_ok=True)
         (out / "report.md").write_text(report)
         print(report)

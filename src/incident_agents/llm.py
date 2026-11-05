@@ -88,7 +88,9 @@ class OpenAICompatibleChat(ChatModel):
     def __init__(self, base_url: str, model: str, api_key: str | None = None):
         from openai import OpenAI
 
-        self.client = OpenAI(base_url=base_url, api_key=api_key or "not-needed")
+        self.client = OpenAI(
+            base_url=base_url, api_key=api_key or "not-needed", max_retries=6, timeout=120
+        )
         self.model = model
 
     def chat(self, messages, tools=None) -> ChatResult:

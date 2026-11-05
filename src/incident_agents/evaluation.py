@@ -9,6 +9,7 @@ against a real Azure AI Foundry deployment (a test of the model's behaviour).
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from pathlib import Path
 
@@ -42,7 +43,7 @@ def check(scenario: dict, res, plant: Plant) -> dict[str, bool]:
     return checks
 
 
-def run_suite(directory: Path, model_factory: Callable) -> str:
+def run_suite(directory: Path, model_factory: Callable, transcripts: Path | None = None) -> str:
     rows, passed = [], 0
     files = sorted(directory.glob("*.yaml"))
     for f in files:
@@ -57,7 +58,16 @@ def run_suite(directory: Path, model_factory: Callable) -> str:
             reporter,
             approve_all if sc.get("approve", True) else deny_all,
         )
-        res = orch.run(sc["incident"])
+        try:
+            res = orch.run(sc["incident"])
+        except Exception as exc:  # e.g. API errors: record and continue with the suite
+            rows.append(f"| {sc['name']} | ERROR: {type(exc).__name__}: {str(exc)[:80]} | | | |")
+            continue
+        if transcripts is not None:
+            transcripts.mkdir(parents=True, exist_ok=True)
+            (transcripts / f"{f.stem}.json").write_text(
+                json.dumps(res.to_dict(), indent=2, default=str)
+            )
         checks = check(sc, res, plant)
         ok = all(checks.values())
         passed += ok
